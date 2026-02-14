@@ -1,9 +1,10 @@
 import Link from "next/link";
 import { Button } from "../ui/button";
+import HeroCarousel from "./HeroCarousel";
 
 function Hero() {
   return (
-    <section className="grid grid-col-1 lg:grid-col-2 gap-24 items-center">
+    <section className="grid grid-cols-1 md:grid-cols-2 gap-24 md:gap-8 items-center">
       <div>
         <h1 className="max-w-2xl text-4xl font-bold tracking-tight sm:text-6xl">
           we are changing the people shop
@@ -18,6 +19,7 @@ function Hero() {
           <Link href="/products">Our Products</Link>
         </Button>
       </div>
+      <HeroCarousel />
     </section>
   );
 }
