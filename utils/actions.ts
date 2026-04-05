@@ -32,3 +32,11 @@ export const fetchAllProducts = ({ search }: { search: string }) => {
     },
   });
 };
+
+export const fetchSingleProduct = ({ id }: { id: string }) => {
+  return db.product.findUnique({
+    where: {
+      id,
+    },
+  });
+};
