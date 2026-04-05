@@ -11,7 +11,7 @@ async function SingleProductPage({ params }: { params: { id: string } }) {
   const { id } = await params;
   const product = await fetchSingleProduct({ id });
 
-  const { name, company, image, description, price } = product as Product;
+  const { name, company, image, description, price } = product;
   const dollarsAmount = formatCurrency(price);
   return (
     <section>

@@ -1,3 +1,4 @@
+import { Product } from "@/generated/prisma";
 import db from "@/utils/db";
 
 export const fetchFeaturedProducts = async () => {
@@ -33,10 +34,17 @@ export const fetchAllProducts = ({ search }: { search: string }) => {
   });
 };
 
-export const fetchSingleProduct = ({ id }: { id: string }) => {
-  return db.product.findUnique({
+export const fetchSingleProduct = async ({ id }: { id: string }) => {
+  const product = await db.product.findUnique({
     where: {
       id,
     },
   });
+
+  if (!product) {
+    throw new Error("Product not found");
+    // return;
+  }
+
+  return product;
 };
