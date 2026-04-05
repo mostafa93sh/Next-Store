@@ -2,6 +2,7 @@ import FavoriteToggleButton from "@/components/products/FavoriteToggleButton";
 import AddToCart from "@/components/single-product/AddToCart";
 import BreadCrumbs from "@/components/single-product/BreadCrumbs";
 import ProductRating from "@/components/single-product/ProductRating";
+import { Product } from "@/generated/prisma";
 import { fetchSingleProduct } from "@/utils/actions";
 import { formatCurrency } from "@/utils/format";
 import Image from "next/image";
@@ -10,7 +11,7 @@ async function SingleProductPage({ params }: { params: { id: string } }) {
   const { id } = await params;
   const product = await fetchSingleProduct({ id });
 
-  const { name, company, image, description, price } = product;
+  const { name, company, image, description, price } = product as Product;
   const dollarsAmount = formatCurrency(price);
   return (
     <section>
