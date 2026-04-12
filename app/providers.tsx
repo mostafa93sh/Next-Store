@@ -13,7 +13,7 @@ function Providers({ children }: { children: React.ReactNode }) {
         enableSystem
         disableTransitionOnChange
       >
-        <ClerkProvider>{children}</ClerkProvider>
+        {children}
       </ThemeProvider>
     </>
   );
