@@ -1,6 +1,21 @@
+"use server";
 import { Product } from "@/generated/prisma";
 import db from "@/utils/db";
+import { auth, currentUser } from "@clerk/nextjs/server";
+const renderError = (error: unknown): { message: string } => {
+  console.log(error);
+  return {
+    message: error instanceof Error ? error.message : "An error occurred",
+  };
+};
 
+const getAuthUser = async () => {
+  const user = await currentUser();
+  if (!user) {
+    throw new Error("You must be logged in to access this route");
+  }
+  return user;
+};
 export const fetchFeaturedProducts = async () => {
   const products = await db.product.findMany({
     where: {
@@ -10,7 +25,7 @@ export const fetchFeaturedProducts = async () => {
   return products;
 };
 
-export const fetchAllProducts = ({ search }: { search: string }) => {
+export const fetchAllProducts = async ({ search }: { search: string }) => {
   return db.product.findMany({
     where: {
       OR: [
@@ -47,4 +62,38 @@ export const fetchSingleProduct = async ({ id }: { id: string }) => {
   }
 
   return product;
+};
+
+export const createProductAction = async (
+  prevState: any,
+  formData: FormData,
+): Promise<{ message: string }> => {
+  const user = await getAuthUser();
+
+  try {
+    const name = formData.get("name") as string;
+    const company = formData.get("company") as string;
+    const price = Number(formData.get("price") as string);
+    const image = formData.get("image") as File;
+    const description = formData.get("description") as string;
+    const featured = Boolean(formData.get("featured") as string);
+
+    await db.product.create({
+      data: {
+        name,
+        company,
+        price,
+        image: "/images/product-1.jpg",
+        description,
+        featured,
+        clerkId: user.id,
+      },
+    });
+
+    return { message: "Product Created" };
+  } catch (error) {
+    return renderError(error);
+  }
+
+  // return { message: "product created" };
 };
