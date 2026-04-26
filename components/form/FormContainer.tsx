@@ -22,6 +22,7 @@ function FormContainer({
         description: state.message,
         style: {
           color: "black",
+
           border: "solid 1px #aaa",
         },
       });
